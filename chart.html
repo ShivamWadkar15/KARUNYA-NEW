@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Chart Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- Create a canvas element for the chart -->
+<canvas id="myChart" width="400" height="400"></canvas>
+
+<script>
+// Function to fetch and parse CSV data
+async function fetchCSV() {
+    const response = await fetch('my-file.csv'); // Replace 'your_data.csv' with the actual path to your CSV file
+    const csvData = await response.text();
+
+    // Parse CSV data
+    const rows = csvData.split('\n').map(row => row.split(','));
+    
+    // Extract labels and values
+    const labels = rows.slice(1).map(row => row[0]);
+    const values = rows.slice(1).map(row => parseFloat(row[1]));
+
+    // Get the canvas element
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // Create the chart
+    const myChart = new Chart(ctx, {
+        type: 'bar', // Change this to 'line', 'pie', etc. as needed
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Chart Title',
+                data: values,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Adjust color as needed
+                borderColor: 'rgba(75, 192, 192, 1)', // Adjust color as needed
+                borderWidth: 1
+            }]
+        },
+        options: {
+            // Additional options (e.g., scales, tooltips, etc.)
+        }
+    });
+}
+
+// Call the function to fetch and parse CSV data
+fetchCSV();
+</script>
+
+</body>
+</html>
